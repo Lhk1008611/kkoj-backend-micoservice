@@ -17,6 +17,7 @@ import com.lhk.kkojbackendmodel.model.enums.QuestionLanguageEnum;
 import com.lhk.kkojbackendmodel.model.enums.QuestionSubmitStatusEnum;
 import com.lhk.kkojbackendmodel.model.vo.QuestionSubmitVO;
 import com.lhk.kkojbackendquestionservice.mapper.QuestionSubmitMapper;
+import com.lhk.kkojbackendquestionservice.message.RabbitMessageProducer;
 import com.lhk.kkojbackendquestionservice.service.QuestionService;
 import com.lhk.kkojbackendquestionservice.service.QuestionSubmitService;
 import com.lhk.kkojbackendserviceclient.service.JudgeFeignClient;
@@ -46,6 +47,9 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Resource
     @Lazy
     private JudgeFeignClient judgeFeignClient;
+
+    @Resource
+    private RabbitMessageProducer rabbitMessageProducer;
 
     /**
      * 提交
@@ -82,11 +86,13 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         if (!save) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据插入失败");
         }
-        // 异步将提交信息交给判题服务进行判题，提高系统响应速率
         Long questionSubmitId = questionSubmit.getId();
-        CompletableFuture.runAsync(() -> {
-            judgeFeignClient.JudgeQuestion(questionSubmitId);
-        });
+        // 异步将提交信息交给判题服务进行判题，提高系统响应速率
+//        CompletableFuture.runAsync(() -> {
+//            judgeFeignClient.JudgeQuestion(questionSubmitId);
+//        });
+        // 使用 RabbitMQ, 将题目提交 id 发送到消息队列中，由消费者获取题目提交 id 进行其他处理
+        rabbitMessageProducer.sendMessage("judge_queue", "judge_exchange", String.valueOf(questionSubmitId));
         return questionSubmitId;
     }
 

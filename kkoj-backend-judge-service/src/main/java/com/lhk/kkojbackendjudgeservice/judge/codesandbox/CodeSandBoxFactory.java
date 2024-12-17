@@ -1,9 +1,9 @@
 package com.lhk.kkojbackendjudgeservice.judge.codesandbox;
 
 
+import com.lhk.kkojbackendjudgeservice.judge.codesandbox.impl.ThirdPartyCodeSandBox;
 import com.lhk.kkojbackendjudgeservice.judge.codesandbox.impl.ExampleCodeSandBox;
 import com.lhk.kkojbackendjudgeservice.judge.codesandbox.impl.RemoteCodeSandBox;
-import com.lhk.kkojbackendjudgeservice.judge.codesandbox.impl.ThirdPartyCodeSandBox;
 
 /**
  * 静态代码沙箱工厂类

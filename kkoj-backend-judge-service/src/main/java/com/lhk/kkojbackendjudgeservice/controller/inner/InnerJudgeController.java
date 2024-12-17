@@ -1,4 +1,4 @@
-package com.lhk.kkojbackendjudgeservice.judge.controller.inner;
+package com.lhk.kkojbackendjudgeservice.controller.inner;
 
 import com.lhk.kkojbackendjudgeservice.judge.JudgeService;
 import com.lhk.kkojbackendmodel.model.entity.QuestionSubmit;

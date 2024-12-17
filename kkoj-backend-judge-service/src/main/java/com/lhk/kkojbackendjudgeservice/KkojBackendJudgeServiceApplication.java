@@ -1,5 +1,6 @@
-package com.lhk.kkojbackendjudgeservice.judge;
+package com.lhk.kkojbackendjudgeservice;
 
+import com.lhk.kkojbackendjudgeservice.message.InitRabbitMq;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -16,6 +17,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class KkojBackendJudgeServiceApplication {
 	public static void main(String[] args) {
+		// 初始化 RabbitMQ
+		InitRabbitMq.doInit();
 		SpringApplication.run(KkojBackendJudgeServiceApplication.class, args);
 	}
 }
