@@ -92,7 +92,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
 //            judgeFeignClient.JudgeQuestion(questionSubmitId);
 //        });
         // 使用 RabbitMQ, 将题目提交 id 发送到消息队列中，由消费者获取题目提交 id 进行其他处理
-        rabbitMessageProducer.sendMessage("judge_queue", "judge_exchange", String.valueOf(questionSubmitId));
+        rabbitMessageProducer.sendMessage("judge_exchange", "judge_routing_key", String.valueOf(questionSubmitId));
         return questionSubmitId;
     }
 
